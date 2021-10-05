@@ -13,28 +13,48 @@ class MyFlutterApp extends StatelessWidget {
       title: "Flutter App",
       //  home: const HomeScreen(),
       home: Scaffold(
-        appBar: AppBar(title: const Text("Test App"),),
+        appBar: AppBar(
+          title: const Text("Test App"),
+        ),
         body: getListView(),
+        floatingActionButton: const FloatingActionButton(
+          onPressed: null,
+          child: Icon(Icons.add),
+          tooltip: "Add New Item",
+        ),
       ),
     );
   }
 }
 
-List<String> getList(){
-  var items = List<String>.generate(1000,(counter) => "Item $counter");
+void snackBar(BuildContext context, String item) {
+  var snackBar = SnackBar(
+      content: Text("Tabbed on $item"),
+      action: SnackBarAction(
+        label: "Ok",
+        onPressed: () {
+          debugPrint("Ok is Clicked");
+        },
+      ));
+
+  Scaffold.of(context).showSnackBar(snackBar);
+}
+
+List<String> getList() {
+  var items = List<String>.generate(1000, (counter) => "Item $counter");
   return items;
 }
 
-Widget getListView(){
+Widget getListView() {
   var list = getList();
   var listItems = ListView.builder(
-    itemBuilder: (context,index){
+    itemBuilder: (context, index) {
       return ListTile(
         title: Text(list[index]),
         leading: const Icon(Icons.laptop),
         trailing: const Icon(Icons.wb_sunny),
-        onTap: (){
-          debugPrint(list[index] + " is tabbed");
+        onTap: () {
+          snackBar(context, list[index]);
         },
       );
     },
